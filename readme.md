@@ -36,13 +36,7 @@ Dataset kemudian diseimbangkan:
 
 ### **Distribusi Kelas**
 
-> Ganti dengan gambar kamu
-
-```
-images/class_distribution.png
-```
-
-![Distribusi Kelas](images/class_distribution.png)
+![Distribusi Kelas](images/val_dis.png)
 
 ### **Contoh Gambar Dataset**
 
@@ -139,73 +133,129 @@ images/confusion_matrix.png
 | Swin-Tiny | x                       | y              | z                  |
 | DeiT-Tiny | a                       | b              | c                  |
 
----
 
-# 🖼️ **Visualisasi Prediksi**
+
+# ▶️ **Cara Menjalankan di Google Colab**
+
+Seluruh eksperimen pada repository ini **dirancang untuk dijalankan di Google Colab** menggunakan GPU Runtime.
+Tidak disarankan menjalankan kode ini secara lokal karena membutuhkan resource GPU dan konfigurasi library yang sesuai dengan lingkungan Colab.
+
+## ✅ 1. Buka Notebook Colab
+
+Buka file notebook berikut di folder `notebooks/`:
+
+➡ **`notebooks/swin_deit_freezing.ipynb`**
+
+Jika ingin langsung membuka via Colab:
 
 ```
-images/sample_predictions.png
+https://colab.research.google.com/github/sigawari/VisionTransformer-Comparison/blob/main/notebooks/swin_deit_freezing.ipynb
 ```
 
-![Sample Predictions](images/sample_predictions.png)
+Klik:
 
----
-
-# 📂 **Struktur Folder**
-
-```
-project/
-│── dataset_balanced/
-│── notebooks/
-│── results/
-│   ├── best_model.pt
-│   ├── worst_model.pt
-│   ├── results_summary.csv
-│── images/
-│   ├── class_distribution.png
-│   ├── confusion_matrix.png
-│   ├── learning_curve.png
-│   └── sample_predictions.png
-│── README.md
-└── train.py
-```
+**Runtime → Change runtime type → GPU**
 
 ---
 
-# ▶️ **Cara Menjalankan**
+## ✅ 2. Mount Google Drive
 
-### 1. Clone repo
+Pada cell pertama notebook, jalankan:
 
-```bash
-git clone https://github.com/username/transformer-comparison.git
-cd transformer-comparison
+```python
+from google.colab import drive
+drive.mount('/content/drive')
 ```
 
-### 2. Install dependencies
+Pastikan folder dataset berada pada Drive yang sesuai (lihat bagian README Dataset).
 
-```bash
-pip install -r requirements.txt
+---
+
+## ✅ 3. Clone Repository dari GitHub
+
+Di dalam notebook, jalankan:
+
+```python
+!git clone https://github.com/sigawari/VisionTransformer-Comparison.git
+%cd VisionTransformer-Comparison
 ```
 
-### 3. Jalankan Training
+---
 
-```bash
-python train.py
+## ✅ 4. Install Dependencies (Colab Friendly)
+
+Jalankan cell:
+
+```python
+!pip install -r requirements.txt
 ```
 
-### 4. Lihat Output
+Colab akan otomatis meng-install:
 
-* `best_model.pt`
-* `worst_model.pt`
-* `results_summary.csv`
+* torch
+* timm
+* scikit-learn
+* matplotlib
+* tqdm
+* dsb.
+
+---
+
+## ✅ 5. Jalankan Training
+
+Notebook sudah berisi seluruh pipeline pelatihan:
+
+* Load dataset
+* Preprocessing
+* Model setup
+* Freezing MLP layer
+* Training loop
+* Evaluation
+
+Klik:
+
+**Runtime → Run all**
+
+Atau jalankan sel per sel.
+
+Output akan berupa:
+
+* Kurva training (loss/acc)
+* Confusion matrix
+* Prediksi contoh
+* Log training
+* File model tersimpan (`.pth`) di folder outputs
+
+---
+
+## ✅ 6. Melihat Hasil Model
+
+Setelah training selesai, model disimpan otomatis:
+
+📁 `outputs/models/swin_freeze.pth`
+📁 `outputs/models/deit_freeze.pth`
+
+Hasil evaluasi tersimpan di:
+
+📁 `outputs/figures/`
+📁 `outputs/logs/`
+
+Semua sudah otomatis digenerate oleh notebook.
+
+---
+
+## 📌 Catatan Penting
+
+* **Notebook harus dijalankan di Colab** (GPU T4 atau L4)
+* Dataset harus disimpan di **Google Drive**, bukan lokal
+* Jangan jalankan `python train.py` di lokal, karena script tersebut dibuat untuk lingkungan Colab juga
+* Pastikan runtime Colab tidak timeout saat training (sekitar ±15 epoch)
 
 ---
 
 # 🎓 **Kesimpulan Singkat**
 
-* Model Swin-Tiny dan DeiT-Tiny sama-sama menunjukkan performa baik pada dataset berukuran menengah.
-* Freezing MLP secara signifikan mengurangi parameter trainable tanpa menurunkan akurasi secara drastis.
-* Swin-Tiny unggul dalam efisiensi inferensi dan stabilitas validasi.
-* DeiT-Tiny menunjukkan sifat lebih ringan dan cepat dilatih dibanding model transformer hierarkis.
-
----
+* Model **Swin-Tiny** dan **DeiT-Tiny** bekerja sangat baik pada dataset berukuran kecil–menengah.
+* Teknik **MLP-Freezing** menurunkan jumlah parameter trainable tanpa menurunkan akurasi secara signifikan.
+* **Swin-Tiny** → lebih stabil & generalisasi baik.
+* **DeiT-Tiny** → lebih cepat konvergensi tapi rentan overfitting.
