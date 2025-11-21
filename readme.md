@@ -149,7 +149,7 @@ Buka file notebook berikut di folder `notebooks/`:
 Jika ingin langsung membuka via Colab:
 
 ```
-https://colab.research.google.com/github/sigawari/VisionTransformer-Comparison/blob/main/notebooks/swin_deit_freezing.ipynb
+https://colab.research.google.com/drive/1-wH0008slTcznAGH_5xMJYUyUcevscqh?usp=sharing
 ```
 
 Klik:
