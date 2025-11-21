@@ -6,7 +6,7 @@ src = "dataset"
 dst = "dataset_balanced"
 os.makedirs(dst, exist_ok=True)
 
-TARGET_PER_CLASS = 200  # karena kelas terkecil ≈200
+TARGET_PER_CLASS = 200 
 
 for cls in sorted(os.listdir(src)):
     src_cls = os.path.join(src, cls)

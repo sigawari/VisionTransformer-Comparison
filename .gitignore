@@ -1,4 +1,5 @@
 /dataset
 /dataset_balanced
+/model_result
 
 best.pt
